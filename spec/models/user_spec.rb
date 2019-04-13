@@ -182,6 +182,12 @@ RSpec.describe User, type: :model do
       expect(@m1.top_user_by_item_count.name).to eq(@u3.name)
       expect(@m1.top_user_by_item_count.quantity).to eq(10)
     end
+
+    it '.generate_slug' do
+      user = create(:user, email: "user2000@gmail.com")
+
+      expect(user.slug).to eq("user2000-gmail-com")
+    end
   end
 
   describe 'class methods' do

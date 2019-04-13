@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
+  before_save :generate_slug
 
   enum role: [:default, :merchant, :admin]
 
@@ -12,6 +13,17 @@ class User < ApplicationRecord
 
   # as a merchant
   has_many :items, foreign_key: 'merchant_id'
+
+  def to_param
+    slug
+  end
+
+  def generate_slug
+    self.slug = email.downcase
+                     .delete(" ")
+                     .parameterize
+                     .truncate(80, omission: '') if email
+  end
 
   def active_items
     items.where(active: true).order(:name)
