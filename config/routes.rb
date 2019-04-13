@@ -42,14 +42,14 @@ Rails.application.routes.draw do
 
     patch '/merchants/:id/downgrade', to: 'merchants#downgrade', as: :downgrade_merchant
     patch '/users/:id/upgrade', to: 'users#upgrade', as: :upgrade_user
-    resources :users, only: [:index, :show]
+    resources :users, only: [:index, :show], param: :slug
 
     resources :orders, only: [:show]
     patch '/orders/:order_id/ship', to: 'orders#ship', as: 'order_ship'
 
     patch '/merchants/:id/enable', to: 'merchants#enable', as: :enable_merchant
     patch '/merchants/:id/disable', to: 'merchants#disable', as: :disable_merchant
-    resources :merchants, only: [:show] do
+    resources :merchants, only: [:show], param: :slug do
       resources :items, only: [:index, :new]
       resources :orders, only: [:show]
     end
