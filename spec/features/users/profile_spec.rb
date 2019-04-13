@@ -116,6 +116,20 @@ RSpec.describe 'user profile', type: :feature do
           end
           expect(updated_user.password_digest).to eq(old_digest)
         end
+
+        scenario 'changing email updates slug' do
+          old_slug = @user.slug
+
+          login_as(@user)
+
+          visit edit_profile_path
+          fill_in :user_email, with: @updated_email
+          click_button 'Submit'
+
+          updated_user = User.find(@user.id)
+
+          expect(updated_user.slug).to_not eq(old_slug)
+        end
       end
     end
 
