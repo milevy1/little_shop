@@ -5,7 +5,10 @@ class CartController < ApplicationController
   end
 
   def increment
-    item = Item.find(params[:id])
+    unless item = Item.find_by(slug: params[:id])
+      item = Item.find(params[:id])
+    end
+    
     if item.inventory <= cart.count_of(item.id)
       flash[:danger] = "The Merchant does not have enough inventory."
     else
@@ -17,7 +20,7 @@ class CartController < ApplicationController
   end
 
   def decrement
-    item = Item.find(params[:id])
+    item = Item.find_by(slug: params[:id])
     cart.remove_item(item.id)
     session[:cart] = cart.contents
     flash[:success] = "#{item.name} has been removed from your cart."
@@ -30,7 +33,7 @@ class CartController < ApplicationController
   end
 
   def remove_item
-    item = Item.find(params[:id])
+    item = Item.find_by(slug: params[:id])
     session[:cart].delete(item.id.to_s)
     flash[:success] = "#{item.name} has been removed from your cart."
     redirect_to cart_path
