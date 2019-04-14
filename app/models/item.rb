@@ -15,6 +15,32 @@ class Item < ApplicationRecord
     greater_than_or_equal_to: 0
   }
 
+  before_save :generate_slug
+
+  def to_param
+    Item.find(self.id).slug
+  end
+
+  def generate_slug
+    last_item = Item.last
+    if last_item.nil?
+      next_item_id = 1
+    else
+      next_item_id = last_item.id + 1
+    end
+
+    if Item.find_by(name: name)
+      self.slug = name.downcase
+                      .parameterize
+                      .truncate(80, omission: '')
+                      .concat("-#{next_item_id}") if name
+    else
+      self.slug = name.downcase
+                      .parameterize
+                      .truncate(80, omission: '')
+    end
+  end
+
   def self.popular_items(limit)
     item_popularity(limit, :desc)
   end

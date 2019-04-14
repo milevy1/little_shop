@@ -60,6 +60,21 @@ RSpec.describe Item, type: :model do
       @order_item_4 = create(:order_item, item: @item, created_at: 2.days.ago, updated_at: 1.day.ago)
     end
 
+    describe '#generate_slug' do
+      it 'generates a slug for an item as slug: item-name' do
+        item = create(:item, name: "Item 1 Name")
+
+        expect(item.slug).to eq("item-1-name")
+      end
+
+      it 'concatenates the item_id if the item_name is not unique' do
+        create(:item, name: "Item 1 Name")
+        item_2 = create(:item, name: "Item 1 Name")
+
+        expect(item_2.slug).to eq("item-1-name-#{item_2.id}")
+      end
+    end
+
     describe "#average_fulfillment_time" do
       it "calculates the average number of seconds between order_item creation and completion" do
         expect(@item.average_fulfillment_time).to eq(158400)
