@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   delete '/cart', to: 'cart#destroy', as: :empty_cart
   delete '/cart/items/:id', to: 'cart#remove_item', as: :remove_item
 
-  resources :items, only: [:index, :show]
+  resources :items, only: [:index, :show], param: :slug
   resources :merchants, only: [:index]
 
   # User Profile Paths
@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   namespace :dashboard do
     get '/', to: 'dashboard#index'
 
-    resources :items
+    resources :items, param: :slug
     patch '/items/:id/enable', to: 'items#enable', as: 'enable_item'
     patch '/items/:id/disable', to: 'items#disable', as: 'disable_item'
     put '/order_items/:order_item_id/fulfill', to: 'orders#fulfill', as: 'fulfill_order_item'
