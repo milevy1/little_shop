@@ -1,6 +1,6 @@
 class Admin::OrdersController < Admin::BaseController
   def show
-    @merchant = User.find(params[:merchant_id])
+    @merchant = User.find_by(slug: params[:merchant_slug])
     @order = Order.find(params[:id])
     @user = @order.user
     @order_items = @order.order_items_for_merchant(@merchant.id)
