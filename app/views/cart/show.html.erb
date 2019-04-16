@@ -18,12 +18,14 @@
         Sold By: <%= item.user.name %>
         <%=  number_to_currency(item.price) %>
         quantity: <%= quantity %>
-
-        <% if item.best_discount(quantity) %>
-        Discount: -<%= number_to_currency item.best_discount(quantity).discount %> (<%= number_to_currency item.best_discount(quantity).discount %> off order of <%= number_to_currency item.best_discount(quantity).threshold %> or more)
-        <% end %>
-
         subtotal: <%= number_to_currency(cart.subtotal(item)) %>
+
+        <p>
+          <% if item.best_discount(quantity) %>
+            Discount: -<%= number_to_currency item.best_discount(quantity).discount %> (<%= number_to_currency item.best_discount(quantity).discount %> off order of <%= number_to_currency item.best_discount(quantity).threshold %> or more)
+          <% end %>
+        </p>
+
         <%= button_to "delete", remove_item_path(item), method: :delete %>
         <%= button_to "+", cart_item_path(item), method: :post %>
         <%= button_to "-", cart_item_path(item), method: :patch %>
