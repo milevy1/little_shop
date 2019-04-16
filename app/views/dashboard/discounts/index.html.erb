@@ -1,0 +1,15 @@
+<h1>Bulk Discounts</h1>
+
+<%= link_to "Add Discount", new_dashboard_discount_path %>
+
+<ul>
+  <% @discounts.each do |discount| %>
+    <div id="discount-<%= discount.id %>">
+      <li><%= discount.name %></li>
+      <li>Discount amount: $<%= discount.discount %></li>
+      <li>Discount threshold: $<%= discount.threshold %></li>
+      <li><%= link_to "Edit Discount", edit_dashboard_discount_path(discount) %></li>
+      <li><%= link_to "Delete Discount", dashboard_discount_path(discount), method: :delete %></li>
+    </div>
+  <% end %>
+</ul>
