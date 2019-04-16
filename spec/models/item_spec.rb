@@ -60,6 +60,24 @@ RSpec.describe Item, type: :model do
       @order_item_4 = create(:order_item, item: @item, created_at: 2.days.ago, updated_at: 1.day.ago)
     end
 
+    describe '#best_discount' do
+      it 'returns the best qualified merchant discount given an item * quantity' do
+        item_1 = create(:item, user: @merchant, price: 10)
+        discount_1 = @merchant.discounts.create(name: "An arbitrary value", discount: 5, threshold: 30)
+        discount_2 = @merchant.discounts.create(name: "An arbitrary value", discount: 10, threshold: 40)
+
+        expect(item_1.best_discount(3)).to eq(discount_1)
+        expect(item_1.best_discount(4)).to eq(discount_2)
+      end
+
+      it 'returns nil if no qualified merchant discount' do
+        item_1 = create(:item, user: @merchant, price: 10)
+        discount_1 = @merchant.discounts.create(name: "An arbitrary value", discount: 5, threshold: 30)
+
+        expect(item_1.best_discount(2)).to eq(nil)
+      end
+    end
+
     describe '#generate_slug' do
       it 'generates a slug for an item as slug: item-name' do
         item = create(:item, name: "Item 1 Name")

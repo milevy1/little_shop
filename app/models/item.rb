@@ -17,6 +17,22 @@ class Item < ApplicationRecord
 
   before_save :generate_slug
 
+  def best_discount(quantity)
+    item_subtotal = self.price * quantity
+
+    merchant_best_discount = self.user.discounts
+      .where("threshold <= ?", item_subtotal)
+      .order(discount: :desc)
+      .limit(1)
+      .first
+
+    if merchant_best_discount
+      merchant_best_discount
+    else
+      nil
+    end
+  end
+
   def to_param
     Item.find(self.id).slug
   end
