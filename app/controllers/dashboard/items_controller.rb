@@ -36,7 +36,7 @@ class Dashboard::ItemsController < Dashboard::BaseController
   end
 
   def enable
-    @item = Item.find_by(slug: params[:id])
+    @item = Item.find_by(slug: params[:slug])
 
     if @item.user == current_user
       toggle_active(@item, true)
@@ -47,7 +47,7 @@ class Dashboard::ItemsController < Dashboard::BaseController
   end
 
   def disable
-    @item = Item.find_by(slug: params[:id])
+    @item = Item.find_by(slug: params[:slug])
     if @item.user == current_user
       toggle_active(@item, false)
       redirect_to dashboard_items_path

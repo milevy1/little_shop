@@ -21,7 +21,7 @@
       <h5 class="card-title">Top Items Sold by Quantity</h5>
       <ul>
         <% @merchant.top_items_sold_by_quantity(5).each do |item| %>
-          <li><%= link_to item.name, dashboard_item_path(item) %>: <%= item.quantity %></li>
+          <li><%= link_to item.name, item_path(item) %>: <%= item.quantity %></li>
         <% end %>
       </ul>
     <% end %>
