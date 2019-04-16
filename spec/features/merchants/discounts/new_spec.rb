@@ -29,5 +29,23 @@ RSpec.describe 'Merchants create functionality for their Bulk Discounts', type: 
       expect(page).to have_content("Discount amount: $#{discount_amount}")
       expect(page).to have_content("Discount threshold: $#{discount_threshold}")
     end
+
+    it 'shows error messages if I enter a discount larger than the threshold' do
+      click_link "Add Discount"
+
+      expect(current_path).to eq(new_dashboard_discount_path)
+
+      discount_name = "Discount name"
+      discount_amount = 51
+      discount_threshold = 50
+
+      fill_in "discount[name]", with: discount_name
+      fill_in "discount[discount]", with: discount_amount
+      fill_in "discount[threshold]", with: discount_threshold
+
+      click_button "Create Discount"
+
+      expect(page).to have_content("Invalid threshold - Threshold value must be greater than the discount value.")
+    end
   end
 end
