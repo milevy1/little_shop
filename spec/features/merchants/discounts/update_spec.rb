@@ -38,5 +38,19 @@ RSpec.describe 'Merchants Edit/Update functionality for their Bulk Discounts', t
         expect(page).to have_content("Discount threshold: $#{updated_threshold}")
       end
     end
+
+    it 'shows me error messages if I enter invalid changes' do
+      within "#discount-#{@discount_1.id}" do
+        click_link "Edit Discount"
+      end
+
+      updated_discount = 50
+
+      fill_in "discount[discount]", with: updated_discount
+
+      click_button "Save Changes"
+
+      expect(page).to have_content "Invalid threshold - Threshold value must be greater than the discount value."
+    end
   end
 end
