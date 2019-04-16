@@ -1,4 +1,5 @@
 class Cart
+
   attr_reader :contents
 
   def initialize(initial_contents)
@@ -41,6 +42,13 @@ class Cart
   end
 
   def subtotal(item)
-    count_of(item.id) * item.price
+    pre_discount_subtotal = count_of(item.id) * item.price
+    merchant_best_discount = item.best_discount(count_of(item.id))
+
+    if merchant_best_discount
+      pre_discount_subtotal - merchant_best_discount.discount
+    else
+      pre_discount_subtotal
+    end
   end
 end
