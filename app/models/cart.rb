@@ -36,7 +36,7 @@ class Cart
 
   def total
     items.sum do |item, quantity|
-      item.price * quantity
+      subtotal(item)
     end
   end
 
