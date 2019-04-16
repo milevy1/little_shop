@@ -1,0 +1,21 @@
+<h1>Add New Discount</h1>
+
+<%= form_for @discount, url: dashboard_discounts_path do |f| %>
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.label :discount %>
+    <%= f.number_field :discount %>
+  </p>
+
+  <p>
+    <%= f.label :threshold %>
+    <%= f.number_field :threshold %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
