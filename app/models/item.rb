@@ -53,7 +53,7 @@ class Item < ApplicationRecord
     else
       self.slug = name.downcase
                       .parameterize
-                      .truncate(80, omission: '')
+                      .truncate(80, omission: '') if name
     end
   end
 
