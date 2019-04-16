@@ -11,6 +11,7 @@ class Dashboard::DiscountsController < Dashboard::BaseController
     @discount = current_user.discounts.new(discount_params)
 
     if @discount.save
+      flash[:success] = "Discount '#{@discount.name}' created successfully!"
       redirect_to dashboard_discounts_path
     else
       flash.now[:danger] = @discount.errors.full_messages
