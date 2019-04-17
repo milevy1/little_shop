@@ -34,14 +34,15 @@ class Profile::OrdersController < ApplicationController
     order = Order.create(user: current_user, status: :pending)
     cart.items.each do |item, quantity|
       best_qualified_discount = item.best_discount(quantity)
+
       if best_qualified_discount
-        item_unit_discount = best_qualified_discount.discount.to_f / best_qualified_discount.threshold.to_f
-        order_price = item.price - (item.price * item_unit_discount)
+        post_discount_subtotal = item.price * quantity - best_qualified_discount.discount.to_f
+        item_unit_order_price = post_discount_subtotal / quantity
       else
-        order_price = item.price
+        item_unit_order_price = item.price
       end
 
-      order.order_items.create(item: item, quantity: quantity, price: order_price)
+      order.order_items.create(item: item, quantity: quantity, price: item_unit_order_price)
     end
     session.delete(:cart)
     flash[:success] = "Your order has been created!"
